@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./at-size/at-size.css">
+</head>
+<body>
+
+
+    
+    <!-- // This is for "atsize" do not touch -->
+    <!-- 
+        This means replace this div with nav sibling in the DOM, only on the smallest device 1:
+        <div replaceSibling="nav" atSize="1">Content here</div>
+    -->
+    <header>
+        <nav refelem="navElem">NAV element</nav>
+        <div replacesibling="navElem" atsize="1">DIV element</div>
+    </header>
+    <main>
+        <aside refelem="asideElem">ASIDE element</aside>
+        <section replacesibling="asideElem" atsize="3">SECTION element</section>
+    </main> 
+    <!-- <footer>
+        <code refelem="navElem">CODE element</code>
+        <div replacesibling="navElem" atsize="2">DIV 2 element</div>
+    </footer> -->
+   
+    
+    <script type="module" src="./main.js"></script>
+
+</body>
+</html>
