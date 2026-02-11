@@ -1,0 +1,38 @@
+
+/* Hide swap elements until ready */
+[replacesibling],
+[refelem] {
+    display: none;
+}
+
+/* Show them when swap system is initialized */
+body[data-swap-ready="true"] [replacesibling],
+body[data-swap-ready="true"] [refelem] {
+    display: block; /* adjust to flex/grid as needed */
+}
+
+
+
+
+/* --- For Button Toggle --- */
+
+/* Hide DOM manipulation elements initially to prevent flicker */
+/* Hide all refElemToggle elements on page load */
+[refElemToggle] {
+    display: none;
+}
+
+/* Hide all triggertype="off" buttons on page load */
+[dommanipulate][triggertype="off"] {
+    display: none;
+}
+
+/* Show toggle elements when they're added to DOM */
+body[data-dom-ready="true"] [refElemToggle] {
+    display: block;
+}
+
+/* Show off buttons when they're added to DOM */
+body[data-dom-ready="true"] [dommanipulate][triggertype="off"] {
+    display: inline-block;
+}
