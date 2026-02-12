@@ -4,6 +4,8 @@ import { initializeAtSizeSwaps, performAtSizeSwap } from './@replace-sibling/at-
 import { initializeUpToSizeSwaps, performUpToSizeSwap } from './@replace-sibling/up-to-size.js';
 import { initializeFromSizeSwaps, performFromSizeSwap } from './@replace-sibling/from-size.js';
 import { initializeWithinSizeRangeSwaps, performWithinSizeRangeSwap } from './@replace-sibling/within-size-range.js';
+import { initializeDomManipulate, storeButtonData } from './dom-manipulate/dom-manipulate.js';
+import { validateDomManipulatePairs } from './validate.js';
 
 function watchBreakpoints(config, callback) {
   // Convert object to a sorted array to ensure we calculate ranges correctly
@@ -45,23 +47,40 @@ function watchBreakpoints(config, callback) {
 // Initialize swaps when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
+        // Store button data BEFORE validation and initialization
+        storeButtonData();
+
+        // Validate DOM manipulate pairs
+        validateDomManipulatePairs();
+
+        // Initialize all systems
         initializeAtSizeSwaps();
         initializeUpToSizeSwaps();
         initializeFromSizeSwaps();
         initializeWithinSizeRangeSwaps();
+        initializeDomManipulate();
+        
+        // Set ready flag to show initially hidden elements
+        document.body.setAttribute('data-dom-ready', 'true');
     });
 } else {
+    storeButtonData();
+    validateDomManipulatePairs();
     initializeAtSizeSwaps();
     initializeUpToSizeSwaps();
     initializeFromSizeSwaps();
     initializeWithinSizeRangeSwaps();
+    initializeDomManipulate();
+    
+    // Set ready flag to show initially hidden elements
+    document.body.setAttribute('data-dom-ready', 'true');
 }
 
 // Setup breakpoint watcher
 watchBreakpoints(_device.sizes, (active) => {
     console.clear();
     console.log('Active Breakpoint:', active.name, 'Pos:', active.pos);
-    console.log('Client State:', clientState.result);
+    // console.log('Client State:', clientState.result);
     
     document.body.setAttribute('data-breakpoint', active.name);
     document.body.setAttribute('data-swap-ready', 'true');

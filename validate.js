@@ -86,3 +86,92 @@ export function validateWithinSizeRanges() {
         console.log('✅ All within size ranges validated successfully!');
     }
 }
+
+// --- VALIDATION: DOM Manipulate pairs ---
+export function validateDomManipulatePairs() {
+    const errors = [];
+    const toggleRefs = new Map();
+
+    // Collect all refElemToggle elements
+    document.querySelectorAll('[refElemToggle]').forEach(elem => {
+        const ref = elem.getAttribute('refElemToggle');
+        if (!toggleRefs.has(ref)) {
+            toggleRefs.set(ref, { elements: [], buttons: [] });
+        }
+        toggleRefs.get(ref).elements.push(elem);
+    });
+
+    // Collect all buttons
+    document.querySelectorAll('[dommanipulate]').forEach(btn => {
+        const ref = btn.getAttribute('dommanipulate');
+        const triggerType = btn.getAttribute('triggertype');
+        
+        if (!triggerType) {
+            errors.push(`❌ [dommanipulate="${ref}"]: Missing triggertype attribute. Use "on" or "off"`);
+            return;
+        }
+        
+        if (triggerType !== 'on' && triggerType !== 'off') {
+            errors.push(`❌ [dommanipulate="${ref}" triggertype="${triggerType}"]: Invalid triggertype. Must be "on" or "off"`);
+            return;
+        }
+        
+        if (!toggleRefs.has(ref)) {
+            toggleRefs.set(ref, { elements: [], buttons: { on: [], off: [] } });
+        }
+        
+        // Group buttons by triggertype for easier validation
+        if (!toggleRefs.get(ref).buttons[triggerType]) {
+            toggleRefs.get(ref).buttons[triggerType] = [];
+        }
+        toggleRefs.get(ref).buttons[triggerType].push(btn);
+    });
+
+    // Validate each toggle reference
+    toggleRefs.forEach((data, ref) => {
+        const { elements, buttons } = data;
+        
+        // Check that there is exactly ONE refElemToggle element per reference
+        if (elements.length > 1) {
+            errors.push(`❌ Multiple [refElemToggle="${ref}"] elements: Found ${elements.length} elements, but only 1 is allowed per toggle reference`);
+        }
+        
+        // Check that there is exactly ONE on button per reference
+        if (buttons.on && buttons.on.length > 1) {
+            errors.push(`❌ Multiple [dommanipulate="${ref}" triggertype="on"] buttons: Found ${buttons.on.length} buttons, but only 1 is allowed per toggle reference`);
+        }
+        
+        // Check that there is exactly ONE off button per reference
+        if (buttons.off && buttons.off.length > 1) {
+            errors.push(`❌ Multiple [dommanipulate="${ref}" triggertype="off"] buttons: Found ${buttons.off.length} buttons, but only 1 is allowed per toggle reference`);
+        }
+        
+        // Check that there are matching elements and buttons
+        const totalButtons = (buttons.on?.length || 0) + (buttons.off?.length || 0);
+        if (elements.length === 0 && totalButtons > 0) {
+            errors.push(`❌ Orphaned [dommanipulate="${ref}"] buttons: No matching [refElemToggle="${ref}"] element found`);
+        }
+        
+        if (elements.length > 0 && totalButtons === 0) {
+            errors.push(`❌ Orphaned [refElemToggle="${ref}"] element: No matching [dommanipulate="${ref}"] buttons found`);
+        }
+        
+        // Check that we have both "on" and "off" buttons
+        if (totalButtons > 0) {
+            if (!buttons.on || buttons.on.length === 0) {
+                errors.push(`❌ [dommanipulate="${ref}"]: No button with triggertype="on" found`);
+            }
+            if (!buttons.off || buttons.off.length === 0) {
+                errors.push(`❌ [dommanipulate="${ref}"]: No button with triggertype="off" found`);
+            }
+        }
+    });
+
+    if (errors.length > 0) {
+        console.error('🚨 DOM Manipulate Validation Errors:');
+        errors.forEach(err => console.error(err));
+        throw new Error('DOM manipulate validation failed. Check console for details.');
+    } else {
+        console.log('✅ All DOM manipulate pairs validated successfully!');
+    }
+}
