@@ -1,7 +1,7 @@
 
 export const breakpointsWatcher = (devices, callback) => {
 
-  // TODO B2 [Add non-existing]: if user does not specific device unit, default to "px" unit.
+  // TODO B2 [Add non-existing]: if user does not specify device unit, default to "px" unit.
 
 
   //--------------------------------------------------------------------------
