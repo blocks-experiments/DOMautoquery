@@ -10,6 +10,27 @@
 
     <p>@build-in-blocks/lib.DOMautoquery Library Test App</p>
 
+    <!-- [replacesibling][atsize] UI test -->
+    <hr/>
+    <header>
+        <nav refelem="navElem">NAV element</nav>
+        <div
+            replacesibling="navElem"
+            atsize="1"
+        >
+            DIV element
+        </div>
+    </header>
+    <main>
+        <aside refelem="asideElem">ASIDE element</aside>
+        <section
+            replacesibling="asideElem"
+            atsize="3"
+        >
+            SECTION element
+        </section>
+    </main>
+
     <script type="module" src="./app.js"></script>
 </body>
 </html>
