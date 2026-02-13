@@ -27,8 +27,6 @@ export const DOMautoquery = {
             // TODO C1 [DOCvelop]: Feed activeDevice into "debug mode"
             console.log('Active Device:', activeDevice);
 
-            document.body.setAttribute('data-swap-ready', 'true');
-
             // TODO B1 [Add non-existing]: Array of all devices (with each device object taking similar shape as the activeDevice object).
             // console.log('All Devices: ', allDevices);
 

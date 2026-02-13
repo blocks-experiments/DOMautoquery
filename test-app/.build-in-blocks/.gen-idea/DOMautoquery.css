@@ -1,0 +1,48 @@
+
+/* --------------------------------------------------------------------------------------- */
+/* FILE NOTE: This file prevents initial page flicker of DOMautoquery manipulated elements */
+/* --------------------------------------------------------------------------------------- */
+
+
+/*  --------------------------------------------------------------------------------------
+    SECTION NOTE: For every other places not covered by  "@media screen and..." code block
+    ----------------------------------------------------------------------------------- */
+/* [refelem="navElem"] {
+    display: block; /* for any [refelem="valueGoesHere"], is redundant (I think) *\/
+ } */
+
+[replacesibling="navElem"][atsize="1"] {
+    display: none !important; /* [Needed]: fixes flash of div initially */
+}
+
+[replacesibling="asideElem"][atsize="3"] {
+    display: none !important;
+}
+
+
+/*  -----------------------------------
+    SECTION NOTE: At device size 1 only
+    ---------------------------------*/
+@media screen and (min-width: 0px) and (max-width: 767px) {
+    [refelem="navElem"] {
+        display: none !important; /* [Needed]: fixes flash of nav element, which is NOT NEEDED AT ALL in this device size */
+    }
+
+    [replacesibling="navElem"][atsize="1"] {
+        display: block !important; /* [Needed]: Restores div back to visible */
+    }
+}
+
+
+/*  -----------------------------------
+    SECTION NOTE: At device size 3 only
+    ---------------------------------*/
+@media screen and (min-width: 1024px) and (max-width: 1279px) {
+    [refelem="asideElem"] {
+        display: none !important;
+    }
+
+    [replacesibling="asideElem"][atsize="3"] {
+        display: block !important;
+    }
+}
