@@ -1,5 +1,9 @@
 
 export const breakpointsWatcher = (devices, callback) => {
+
+  // TODO B2 [Add non-existing]: if user does not specific device unit, default to "px" unit.
+
+
   //--------------------------------------------------------------------------
   // Convert object to a sorted array to ensure we calculate ranges correctly
   //--------------------------------------------------------------------------
@@ -24,9 +28,9 @@ export const breakpointsWatcher = (devices, callback) => {
     // If there is a next breakpoint, set a max-width limit.
     // If it's the last one, it's just min-width to infinity.
     //-------------------------------------------------------
-    let mQueryRange = `(min-width: ${bp.startPoint}px)`;
+    let mQueryRange = `(min-width: ${bp.startPoint}${devices.unit})`;
     if (nextBp) {
-      mQueryRange += ` and (max-width: ${nextBp.startPoint - 1}px)`;
+      mQueryRange += ` and (max-width: ${nextBp.startPoint - 1}${devices.unit})`;
     }
 
     bp = { 
