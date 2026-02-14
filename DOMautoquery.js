@@ -1,18 +1,27 @@
 import { breakpointsWatcher } from './breakpoints.watcher.js';
 import { initializeSiblingSwap, performSiblingSwap } from './queries/replacesibling.js';
 
+const deviceSizeAttributeTypes = ['atsize', 'fromsize', 'uptosize', 'withinsizerange'];
+
+const initializeAllSiblingSwaps = () => {
+    deviceSizeAttributeTypes.forEach((deviceSizeAttributeType) => {
+        initializeSiblingSwap({ deviceSizeAttributeType });
+    });
+}
 
 // Initialize swaps when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
 
+        //-----------------------
         // Initialize all systems
-        initializeSiblingSwap({ deviceSizeAttributeType: 'atsize' });
+        //-----------------------
+        initializeAllSiblingSwaps();
 
     });
 } else {
 
-    initializeSiblingSwap({ deviceSizeAttributeType: 'atsize' });
+    initializeAllSiblingSwaps();
 
 }
 
@@ -30,7 +39,9 @@ export const DOMautoquery = {
             // TODO B1 [Add non-existing]: Array of all devices (with each device object taking similar shape as the activeDevice object).
             // console.log('All Devices: ', allDevices);
 
-            performSiblingSwap({ activeDevice, deviceSizeAttributeType: 'atsize' });
+            deviceSizeAttributeTypes.forEach((deviceSizeAttributeType) => {
+                performSiblingSwap({ activeDevice, deviceSizeAttributeType });
+            });
         });
     },
 };

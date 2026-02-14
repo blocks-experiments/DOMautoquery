@@ -31,6 +31,69 @@
         </section>
     </main>
 
+    <!-- [replacesibling][uptosize] UI test -->
+    <hr/>
+    <header>
+        <nav refelem="navElem2">NAV 2 element</nav>
+        <div
+            replacesibling="navElem2"
+            uptosize="2"
+        >
+            DIV 2 element
+        </div>
+    </header>
+    <main>
+        <aside refelem="asideElem2">ASIDE 2 element</aside>
+        <section
+            replacesibling="asideElem2"
+            uptosize="3"
+        >
+            SECTION 2 element
+        </section>
+    </main>
+
+    <!-- [replacesibling][fromsize] UI test -->
+    <hr/>
+    <header>
+        <nav refelem="navElem3">NAV element</nav>
+        <div 
+            replacesibling="navElem3"
+            fromsize="2"
+        >
+            DIV element
+        </div>
+    </header>
+    <main>
+        <aside refelem="asideElem3">ASIDE element</aside>
+        <section
+            replacesibling="asideElem3"
+            fromsize="3"
+        >
+            SECTION element
+        </section>
+    </main>
+
+    <!-- [replacesibling][withinsizerange] UI test -->
+    <hr/>
+    <header>
+        <nav refelem="navElem4">NAV element</nav>
+        <div
+            replacesibling="navElem4"
+            withinsizerange="2-4"
+        >
+            DIV element
+        </div>
+    </header>
+    <main>
+        <aside refelem="asideElem4">ASIDE element</aside>
+        <section
+            replacesibling="asideElem4"
+            withinsizerange="3-4"
+        >
+            SECTION element
+        </section>
+    </main>
+
     <script type="module" src="./app.js"></script>
 </body>
 </html>

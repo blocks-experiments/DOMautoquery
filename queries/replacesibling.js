@@ -23,15 +23,53 @@ export const initializeSiblingSwap = ({ deviceSizeAttributeType }) => {
             //---------------------------------------------------------
             // Store swap data in clientState with insertion point info
             //---------------------------------------------------------
-            domState.update(`${deviceSizeAttributeType}_${refAttribute}`, {
+            let swapObj = {
                 refelem,
-                atsize: parseInt(replacerElem.getAttribute(deviceSizeAttributeType)),
                 _replacerElem: replacerElem,
                 _parentElem: refelem.parentNode,
                 _nextSiblingElem: refelem.nextSibling,
                 _refAttribute: refAttribute,
                 _sizeAttributeType: deviceSizeAttributeType,
-            });
+            };
+            //-
+            if (deviceSizeAttributeType === 'atsize') {
+                swapObj = {
+                    ...swapObj,
+                    atsize: parseInt(replacerElem.getAttribute(deviceSizeAttributeType)),
+                };
+            }
+            if (deviceSizeAttributeType === 'uptosize') {
+                swapObj = {
+                    ...swapObj,
+                    uptosize: parseInt(replacerElem.getAttribute(deviceSizeAttributeType)),
+                };
+            }
+            if (deviceSizeAttributeType === 'fromsize') {
+                swapObj = {
+                    ...swapObj,
+                    fromsize: parseInt(replacerElem.getAttribute(deviceSizeAttributeType)),
+                };
+            }
+            if (deviceSizeAttributeType === 'withinsizerange') {
+                //----------------------------------------
+                // Parse e.g. range "2-4" into min and max
+                //----------------------------------------
+                const rangeStr = replacerElem.getAttribute('withinsizerange');
+                const [minSize, maxSize] = rangeStr.split('-').map(Number);
+
+                swapObj = {
+                    ...swapObj,
+                    range: {
+                        minSize,
+                        maxSize,
+                    },
+                    withinsizerange: parseInt(replacerElem.getAttribute(deviceSizeAttributeType)),
+                };
+            }
+            //----------------
+            // Update domState
+            //----------------
+            domState.update(`${deviceSizeAttributeType}_${refAttribute}`, swapObj);
 
             //---------------------------------------------------------
             // Remove replacer from DOM - we'll add it back when needed
@@ -48,13 +86,18 @@ export const performSiblingSwap = ({ activeDevice, deviceSizeAttributeType }) =>
         // ----------------------------------------------------------------
         if (item._sizeAttributeType !== deviceSizeAttributeType) return;
 
-        const { refelem, atsize, _replacerElem, _parentElem, _nextSiblingElem } = item;
+        const { refelem, _replacerElem, _parentElem, _nextSiblingElem, atsize, uptosize, fromsize, withinsizerange, range } = item;
 
         // ---------------------------------------------------------
         // Determine which element should be visible
         // Show replacer ONLY when we're at the specified breakpoint
         // ---------------------------------------------------------
-        const shouldShowReplacerElem = activeDevice.id === atsize;
+        let shouldShowReplacerElem = false;
+        if (atsize) shouldShowReplacerElem = activeDevice.id === atsize;
+        if (uptosize) shouldShowReplacerElem = activeDevice.id <= uptosize;
+        if (fromsize) shouldShowReplacerElem = activeDevice.id >= fromsize;
+        if (withinsizerange) shouldShowReplacerElem = activeDevice.id >= range.minSize && activeDevice.id <= range.maxSize;
+        //-
         const elementToShow = shouldShowReplacerElem ? _replacerElem : refelem;
         const elementToHide = shouldShowReplacerElem ? refelem : _replacerElem;
 
