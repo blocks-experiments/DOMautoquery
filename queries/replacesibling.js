@@ -1,16 +1,21 @@
 import { domState } from '../dom.state.js';
-// import { validateSwapPairs } from '../validate.js';
-
-
-const instructionAttribute = 'replacesibling';
+import { validateSiblingSwapPairs } from '../validate.js';
+import { instructionAttribute } from '../var.js';
 
 // ------------------------------------------------------------------------
 // INITIALIZATION: Build swap state in clientState BEFORE starting watchers
 // ------------------------------------------------------------------------
 export const initializeSiblingSwap = ({ deviceSizeAttributeType }) => {
-    // validateSwapPairs();
 
-    document.querySelectorAll(`[${instructionAttribute}][${deviceSizeAttributeType}]`).forEach(replacerElem => {
+    const replacerElems = document.querySelectorAll(`[${instructionAttribute}][${deviceSizeAttributeType}]`);
+
+    //-------------------------------------------
+    // Validate & return sibling swap user issues
+    //-------------------------------------------
+    validateSiblingSwapPairs({ replacerElems });
+    //-------------------------------------------
+
+    replacerElems.forEach(replacerElem => {
         const refAttribute = replacerElem.getAttribute(instructionAttribute);
         const refelem = document.querySelector(`[refelem="${refAttribute}"]`);
 
